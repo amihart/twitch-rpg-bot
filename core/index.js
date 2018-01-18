@@ -1,7 +1,9 @@
+//Get the current unix time in seconds.
 function time() {
 	return Math.floor(new Date().getTime()/1000);
 }
 
+//Convert the numeric weapon quality to its corresponding name. 
 function qualityToName(q) {
 	var name = "";
 	const level_depth = 5;
@@ -30,14 +32,15 @@ function qualityToName(q) {
 	return name;
 }
 
+//Return a random number between 0 and top.
 function rnd(top) {
 	return (Math.floor(Math.random() * 100000) % (top + 1));
 }
 
+//Capitalize a word.
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
 
 function PlayerObject(username) {
 	this.max_hp = 10;
@@ -101,6 +104,7 @@ function checkHP(user) {
 	if (user_data[user].hp <= 0) {
 		chat(user + " is dead! Jebaited");
 		user_data[user].xp = 0;
+		user_data[user].hp = user_data[user].max_hp;
 		return -1;
 	}
 	return 1;
@@ -187,11 +191,27 @@ function attack(user1, user2) {
 }
 
 function chat(msg) {
-	client.action("amihart", msg);
+	var channel = options.channels[0].replace("#", "");
+	client.action(channel, msg);
 }
 
 function playSound(snd) {
 	player.play(snd, function(err) {});
+}
+
+function loadUserCommands() {
+	var commands = fs.readFileSync("config/commands.txt", "utf8").split("\n");
+	var ret = {};
+	for (var i = 0; i < commands.length; i++) {
+		var command = commands[i].split(":")[0];
+		var output = commands[i].split(":")[1];
+		if (command != undefined && output != undefined) {
+			command = command.trim(); 
+			output = output.trim();
+			ret[command] = output;
+		}
+	}
+	return ret;
 }
 
 function doCommands(command, user, options) {
@@ -200,58 +220,16 @@ function doCommands(command, user, options) {
 	}
 	var ud = user_data[user];
 
-	if (command == "waluigi") {
-		playSound("waluigi.mp3");
-	}
-	if (command == "wah") {
-		playSound("wah.mp3");
+	if (user_commands[command] != undefined) {
+		chat(user_commands[command]);
 	}
  
-
-	if (command == "setup") {
-		chat("is using a Core i5 laptop running Ubuntu 16 with"+
-			" a budget standard definition capture card "+
-			"called GameCap for composite or component video.");
-	}
-	if (command == "amihart") {
-		chat("A non-streamer who loves video games, bunnies, waifus and husbandos.");
-	}
-	if (command == "futzevogel") {
-		chat("Master Game Boy speedrunner and most lovable sloth around. SeriousSloth");
-	}
-	if (command == "nostalgicdan") {
-		chat("Dan the Man, bringer of chaos, lover of waifus. TPFufun");
-	}
-	if (command == "nevershutsup") {
-		chat("Most pro Twitch streamer in all of Twitch. ThankEgg"); 
-	}
-	if (command == "thejacara") {
-		chat("Pupper absorber and TI-99 extraordinaire. PogChamp");
-	}
-	if (command == "mudusama") {
-		chat("North Korean hand model and owner of every game in existence. InuyoFace"); 
-	}
-	if (command == "dustyd0") {
-		chat("Video game collector who always forgets to stream. EleGiggle"); 
-	}
-	if (command == "xingy") {
-		chat("Kindhearted master artist. CoolStoryBob");
-	}
-	if (command == "lissy") {
-		chat("A sweet and lovable kitten. CoolCat");
-	}
-	if (command == "squibbons") {
-		chat("The queen of the spiders, the master of speedrunning, the craftswoman of bone-chilling scores. TPcrunchyroll");
-	}
 	if (command == "so") {
 		chat("WutFace WTF IS THIS GRILL DO https://twitch.tv/"+options[0]+" LUL");
 		//chat("Give " + options[0] + " a follow at "+
 		//	"https://www.twitch.tv/" + options[0] + " !");
 	}
-	if (command == "school") {
-		chat("is a student currently in her third year of her "+
-			"Bachelor's of Computer Science degree.");
-	}
+
 	if (command == "attack") {
 		if (options[0] != undefined) {
 			options[0] = options[0].toLowerCase();
@@ -298,40 +276,6 @@ function doCommands(command, user, options) {
 	if (command == "heal") {
 		heal(user);
 	}
-	if (command == "waifu") {
-		chat("TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo TehePelo");
-	}
-	if (command == "husbando") {
-		chat("FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest FEForrest");
-	}
-	if (command == "save" && user == "amihart") {
-		chat("Saving data...");
-		var data = JSON.stringify(user_data);
-		fs.writeFileSync("data.json", data, {"encoding":'utf8'});
-		chat("Data saved.");
-	}
-	if (command == "autosave" && user == "amihart") {
-		if (options.length >= 1) {
-			if (options[0] == "on") {
-				chat("Autosave enabled.");
-				autosave = true;
-			} else if (options[0] == "off") {
-				chat("Autosave disabled.");
-				autosave = "false";
-			}
-		}
-	}
-	if (command == "load" && user == "amihart") {
-		chat("Loading data...");
-		var data = fs.readFileSync("data.json", "utf8");
-		user_data = JSON.parse(data);
-		chat("Data loaded.");
-	}
-	/*if (command == "cheat") {
-		user_data[options[0].toLowerCase()].xp = user_data[options[0].toLowerCase()].next_level;;
-		checkXP(options[0].toLowerCase());
-		
-	}*/
 	if (command == "gold") {
 		chat(user + " has " + user_data[user].gold + " gold. BlessRNG TwitchRPG");
 	}
@@ -347,32 +291,15 @@ var tmi = require('tmi.js');
 var fs = require('fs');
 var player = require('play-sound')(opts = {});
 var battles = {};
-var user_data = {};
-var autosave = false;
-
-var options = {
-	options: {
-		debug: true
-	},
-	connection: {
-		cluster: "aws",
-		reconnect: true
-	},
-	identity: {
-		username: "amiwaifubot",
-		password: "oauth:te9w9f5am9mqsyqj5epn46pryvbq6h"
-	},
-	channels: ["amihart"]
-};
+var user_data = JSON.parse(fs.readFileSync("data.json", "utf8"));
+var options = JSON.parse(fs.readFileSync("options.json", "utf8"));
+var user_commands = loadUserCommands();
 
 var client = new tmi.client(options);
 client.connect();
 
 client.on('chat', function(channel, user, message, self) {
-	if (autosave == true) {
-		var data = JSON.stringify(user_data);
-		fs.writeFileSync("data.json", data, {"encoding":'utf8'});
-	}
+	fs.writeFileSync("data.json", JSON.stringify(user_data), {"encoding":'utf8'});
 	var username = user['display-name'].toString().toLowerCase();
 	if (user_data[username] == undefined) {
 		user_data[username] = new PlayerObject(username);
@@ -391,5 +318,4 @@ client.on('chat', function(channel, user, message, self) {
 
 client.on('connected', function(address, port) {
 	console.log("Address: " + address + " Port: " + port);
-	//client.action("amihart", "test...");
 });

@@ -1,0 +1,14 @@
+{
+	"options": {
+		"debug": true
+	},
+	"connection": {
+		"cluster": "aws",
+		"reconnect": true
+	},
+	"identity": {
+		"username": "amiwaifubot",
+		"password": "oauth:te9w9f5am9mqsyqj5epn46pryvbq6h"
+	},
+	"channels": ["amihart"]
+}
