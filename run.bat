@@ -1,3 +1,3 @@
 @echo off
 cd core
-nodejs main.js
+node main.js
