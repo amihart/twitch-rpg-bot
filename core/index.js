@@ -57,6 +57,7 @@ function PlayerObject(username) {
 	this.weapon_quality = 0;
 }
 
+//Updates the player's gold based on how much time has passed.
 function updateGold(user) {
 	var ud = user_data[user];
 	var t = time();
@@ -73,6 +74,7 @@ function updateGold(user) {
 	ud.gold_time = time();
 }
 
+//Heal a user.
 function heal(user) {
 	var ud = user_data[user];
 	if (ud.hp >= ud.max_hp) {
@@ -82,7 +84,6 @@ function heal(user) {
 		if (ud.gold < cost_per_hp) {
 			chat(user + ", you don't have enough money for a health potion. FeelsBadMan");
 		} else {
-			//chat("Before: " + ud.hp + "/" + ud.max_hp + "HP, " + ud.gold + "gold");
 			var healing = ud.max_hp - ud.hp;	//5
 			var cost = healing * cost_per_hp;	//50
 			var expenditure = cost;			//50
@@ -95,11 +96,11 @@ function heal(user) {
 			ud.gold -= expenditure;
 			ud.hp += healing;
 			chat(user + " buys a health potion and recovers " + healing + " HP! CorgiDerp");
-			//chat("After: " + ud.hp + "/" + ud.max_hp + "HP, " + ud.gold + "gold");
 		}
 	}
 }
 
+//Check if the user is dead.
 function checkHP(user) {
 	if (user_data[user].hp <= 0) {
 		chat(user + " is dead! Jebaited");
@@ -110,6 +111,7 @@ function checkHP(user) {
 	return 1;
 }
 
+//Check if the user has gained a level. 
 function checkXP(user) {
 	var ud = user_data[user];
 	if (ud.xp >= ud.next_level) {
@@ -121,6 +123,7 @@ function checkXP(user) {
 	}
 }
 
+//Output the stats of the user.
 function stats(user) {
 	var ud = user_data[user];
 	var weapon;	
@@ -133,6 +136,7 @@ function stats(user) {
 		"EXP: " + ud.xp + "/" + ud.next_level + ", Weapon: " + weapon);
 }
 
+//Forge a new weapon for the user.
 function forge(user) {
 	var ud = user_data[user];
 	if (ud.weapon_quality >= 49) {
@@ -148,6 +152,7 @@ function forge(user) {
 		chat(user + ", it requires " + cost + " gold to forge your weapon. BegWan");
 	}
 }
+
 //See if the user1 has any bonuses against user2
 function getBonus(user1, user2) {
 	user1 = user_data[user1];
@@ -190,30 +195,43 @@ function attack(user1, user2) {
 	return death_check;
 }
 
+//Output a message into the chat.
 function chat(msg) {
 	var channel = options.channels[0].replace("#", "");
 	client.action(channel, msg);
 }
 
+//Play a sound.
 function playSound(snd) {
-	player.play(snd, function(err) {});
+	var audio = player.play(snd, function(err) {});
+	setTimeout(function() {
+		audio.kill();
+	}, 5000);
 }
 
+//Load the custom commands. 
 function loadUserCommands() {
 	var commands = fs.readFileSync("config/commands.txt", "utf8").split("\n");
 	var ret = {};
 	for (var i = 0; i < commands.length; i++) {
 		var command = commands[i].split(":")[0];
-		var output = commands[i].split(":")[1];
+		var output = "";
+		for (var j = 1; j < commands[i].split(":").length; j++) {
+			if (j != 1) output += ":";
+			output += commands[i].split(":")[j];
+		}
 		if (command != undefined && output != undefined) {
 			command = command.trim(); 
 			output = output.trim();
-			ret[command] = output;
+			if (command.length > 0 && output.length > 0) {
+				ret[command] = output;
+			}
 		}
 	}
 	return ret;
 }
 
+//Execute a command.
 function doCommands(command, user, options) {
 	if (user_data[user] == undefined) {
 		user_data[user] = new PlayerObject(user);
@@ -221,15 +239,24 @@ function doCommands(command, user, options) {
 	var ud = user_data[user];
 
 	if (user_commands[command] != undefined) {
-		chat(user_commands[command]);
+		var output = user_commands[command];
+		var options_error = false;
+		for (var i = 0; i < 9; i++) {
+			if (output.replace("$" + i, "") != output && options[i] == undefined) {
+				options_error = true;
+				break;
+			}
+			output = output.replace("$" + i, options[i]);
+		}
+		if (!options_error) {
+			if (user_commands[command].charAt(0) == "!") {
+				playSound("sounds/" + output.split("!")[1]);
+			} else {
+				chat(output);
+			}
+		}
 	}
  
-	if (command == "so") {
-		chat("WutFace WTF IS THIS GRILL DO https://twitch.tv/"+options[0]+" LUL");
-		//chat("Give " + options[0] + " a follow at "+
-		//	"https://www.twitch.tv/" + options[0] + " !");
-	}
-
 	if (command == "attack") {
 		if (options[0] != undefined) {
 			options[0] = options[0].toLowerCase();
@@ -287,8 +314,8 @@ function doCommands(command, user, options) {
 	}
 }
 
-var tmi = require('tmi.js');
-var fs = require('fs');
+const tmi = require('tmi.js');
+const fs = require('fs');
 var player = require('play-sound')(opts = {});
 var battles = {};
 var user_data = JSON.parse(fs.readFileSync("data.json", "utf8"));

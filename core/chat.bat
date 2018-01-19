@@ -1,1 +1,0 @@
-start chrome --app=https://www.twitch.tv/popout/amihart/chat?popout=#enable#bot_amiwaifubot#tts_en-GB
