@@ -183,14 +183,18 @@ function attack(user1, user2) {
 		chat(user2 + " is attacked and loses " + hp_loss + " HP! Poooound KAPOW");
 	}
 	user_data[user2].hp -= hp_loss;
-	user_data[user1].xp += user_data[user2].level * 2;
+
+	if (user1 != user2) 
+		user_data[user1].xp += user_data[user2].level * 2;
+	else
+		user_data[user1].xp += Math.ceil(user_data[user2].level / 2);
 
 	var death_check = checkHP(user2);
 	if (death_check == -1) {
 		user_data[user1].xp += user_data[user2].level * 10;		
 	}
 	//if (user1 != user2) {
-		checkXP(user1);
+	checkXP(user1);
 	//}
 	return death_check;
 }
