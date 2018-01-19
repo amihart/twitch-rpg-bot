@@ -250,7 +250,7 @@ function doCommands(command, user, options) {
 		}
 		if (!options_error) {
 			if (user_commands[command].charAt(0) == "!") {
-				playSound("sounds/" + output.split("!")[1]);
+				//playSound("sounds/" + output.split("!")[1]);
 			} else {
 				chat(output);
 			}
