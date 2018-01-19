@@ -233,6 +233,10 @@ function loadUserCommands() {
 
 //Execute a command.
 function doCommands(command, user, options) {
+	for (var i = 0; i < options.length; i++) {
+		options[i] = options[i].replace("@", "");
+	}
+
 	if (user_data[user] == undefined) {
 		user_data[user] = new PlayerObject(user);
 	}
