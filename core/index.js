@@ -310,7 +310,7 @@ function doCommands(command, user, options) {
 		forge(user);
 	}
 	if (command == "guide") {
-		chat("Guide: goo.gl/ExEuuc");
+		chat("Guide: goo.gl/sVXnPo");
 	}
 }
 
