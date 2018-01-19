@@ -1,0 +1,126 @@
+~Guide to Twitch RPG~
+--------------------------------------------------------
+Sections
+  1. Introduction
+  2. Levels
+  3. Attacking
+  4. Weapons
+  5. Healing
+  6. Gold
+  7. Death
+--------------------------------------------------------
+1. Introduction
+--------------------------------------------------------
+Each player is assigned a new stat sheet upon posting 
+their first message within the chatroom.
+Here are the list of stats...
+
+  HP                 The player's current HP, if this 
+                     drops below 1 the player dies (see 
+                     section "Death").
+  Max HP             The maximum amount of HP that the
+                     player can carry.
+  Level              The player's current level. (see
+                     section "Levels").
+  Next Level         The number of XP the player needs
+                     to reach the next level.
+  XP                 The player's current XP.
+  Weapon Class       The "class" of weapon the player 
+                     possesses (see section "Weapons").
+  Weapon Quality     The "quality" of weapon the player
+                     possesses (see section "Weapons").
+  Gold               The amount of gold the player has.
+
+When a new stat sheet assigned, here are the initial
+values...
+
+  HP                 10
+  Max HP             10
+  Level               1
+  Next Level         10
+  XP                  0
+  Weapon Class   Random
+  Weapon Quality      0
+  Gold                0
+
+In order to see your stats, use the "!stat" command at
+any time. This will display your HP/Max HP, XP/Next
+Level, and Weapon Quality and Weapon Class.
+
+You can also use "!stat" with a user to check another
+user's stats.
+
+The goal of the game is to reach as high level as 
+possible.
+--------------------------------------------------------
+2. Levels
+--------------------------------------------------------
+To gain a level, the number of XP you have must be equal
+to or exceed your "Next Level" stat. There are two ways
+to raise your XP stat, both involve attacking other 
+players. Gaining a level increases your Max HP stat and
+then replenishes your HP. It also raises the Next Level
+stat making it take more XP to reach the next level.
+--------------------------------------------------------
+3. Attacking
+--------------------------------------------------------
+You can attack another player by using the command
+"!attack" followed by the player that you wish to 
+attack. The attacked player must use the command 
+"!accept" to actually initiate the battle.
+
+Once a battle is initiated, the attacking player attacks
+the attacked player. The amount of damage inflicted is
+random based on the attacking player's level plus
+bonuses based on the attacking player's weapon. 
+
+If the attacked player is not dead, the attacked player
+will automatically counter-attack the attacking player
+with the same rules.
+
+Both players gain a little XP for engaging in battle 
+based on the level of player that they attacked. If 
+one of the players dies, the surviving player is awarded
+a large sum of XP based on the level of the player that
+died.
+--------------------------------------------------------
+4. Weapons
+--------------------------------------------------------
+Bonuses are awarded in battle depending on the weapon
+that the players have. Each user starts randomly
+assigned a weapon class. These classes are "sword", 
+"lance", and "axe". A bonus will be awarded to a player
+in battle if their weapon class defeats the opposing
+player's weapon class.
+
+Axes defeat lances.
+Lances defeat swords.
+Swords defeat axes. 
+
+Additional bonuses are awarded depending on the player's
+weapon quality. The quality of a player's weapon can be
+upgraded using the "!forge" command. Forging requires 
+gold. 
+--------------------------------------------------------
+5. Healing
+--------------------------------------------------------
+After a battle, a player may want to use the "!heal"
+command. This will purchase a health potion using the
+player's gold. The quality of the health potion is equal
+to 10 gold per 1 recovered HP.  
+--------------------------------------------------------
+6. Gold
+--------------------------------------------------------
+The player accumulates gold by chatting and waiting. 
+1 gold is accumulated per second, however if the player
+does not chat in a lengthy amounth of time, then the
+gold will stop accumulating. Use the "!gold" command to
+check how much gold you have.
+--------------------------------------------------------
+7. Death
+--------------------------------------------------------
+If a player dies, the only penalty is that all XP for 
+their current level is lost.
+If the player is attacked before counter-attacking and 
+this attack kills the player, the player will not 
+counter-attack.
