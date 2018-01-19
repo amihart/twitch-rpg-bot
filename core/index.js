@@ -220,7 +220,7 @@ function loadUserCommands() {
 			if (j != 1) output += ":";
 			output += commands[i].split(":")[j];
 		}
-		if (command != undefined && output != undefined) {
+		if (command != undefined && output != undefined && command != "guide") {
 			command = command.trim(); 
 			output = output.trim();
 			if (command.length > 0 && output.length > 0) {
