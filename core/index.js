@@ -189,9 +189,9 @@ function attack(user1, user2) {
 	if (death_check == -1) {
 		user_data[user1].xp += user_data[user2].level * 10;		
 	}
-	if (user1 != user2) {
+	//if (user1 != user2) {
 		checkXP(user1);
-	}
+	//}
 	return death_check;
 }
 
