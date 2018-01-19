@@ -2,7 +2,7 @@ A bot that lets you RPG battle other users.
 Supports custom commands and auto-updates.
 
 Installling:
-1. Install NodeJS 
+1. Install NodeJS from here: 
 https://nodejs.org/en/download/
 2. Download this archive 
 3. Extract the ZIP file
