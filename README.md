@@ -11,4 +11,4 @@ https://nodejs.org/en/download/
 http://www.twitchapps.com/tmi
 6. The bot should automatically start after this step.
 
-Any time you want to run the bot, just double-click "run.bat" again. 
+Any time you want to run the bot, just double-click "run.bat" again. You will not have to reinput any information and it will automatically update itself when need-be. 
