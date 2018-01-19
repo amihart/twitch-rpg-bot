@@ -7,7 +7,7 @@ https://nodejs.org/en/download/
 2. Download this archive.
 3. Extract the ZIP file.
 4. Double click "run.bat".
-5. It will ask you for a username, channel, and "oath". For the username, put the username of your bot. For "channel", put the channel your bot will run on. For "oath", get that here:
+5. It will ask you for a username, channel, and "oauth". For the username, put the username of your bot. For "channel", put the channel your bot will run on. For "oauth", get that here:
 http://www.twitchapps.com/tmi
 6. The bot should automatically start after this step.
 
