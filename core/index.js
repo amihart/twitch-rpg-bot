@@ -207,10 +207,22 @@ function chat(msg) {
 
 //Play a sound.
 function playSound(snd) {
-	var audio = player.play(snd, function(err) {});
-	setTimeout(function() {
-		audio.kill();
-	}, 5000);
+	console.log("Playing sound `" + snd + "`...");
+	if (!fs.existsSync("/Windows")) {
+		console.log("...");
+		var audio = player.play(snd, function(err) {});
+		setTimeout(function() {
+			audio.kill();
+		}, 5000);
+	} else {
+		var cmd = "start wmplayer ";
+		cmd += "\"%CD%\\" + snd + "\"";  
+		exec(cmd, function(err, stdout, stderr) {
+			if (err) {
+				return;
+			}
+		});
+	}
 }
 
 //Load the custom commands. 
@@ -258,7 +270,7 @@ function doCommands(command, user, options) {
 		}
 		if (!options_error) {
 			if (user_commands[command].charAt(0) == "!") {
-				//playSound("sounds/" + output.split("!")[1]);
+				playSound("sounds/" + output.split("!")[1]);
 			} else {
 				chat(output);
 			}
@@ -324,6 +336,8 @@ function doCommands(command, user, options) {
 
 const tmi = require('tmi.js');
 const fs = require('fs');
+const { exec } = require('child_process');
+
 var player = require('play-sound')(opts = {});
 var battles = {};
 var user_data = JSON.parse(fs.readFileSync("data.json", "utf8"));
