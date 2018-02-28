@@ -3,6 +3,18 @@ function time() {
 	return Math.floor(new Date().getTime()/1000);
 }
 
+//Chats the time the bot has been up.
+function uptime() {
+	var t = time() - start_time;
+	var s = t % 60;
+	t = (t - s) / 60;
+	var m = t % 60;
+	t = (t - m) / 60;
+	var h = t;
+	
+	chat(h + "h " + m + "m " + s + "s");
+}
+
 //Convert the numeric weapon quality to its corresponding name. 
 function qualityToName(q) {
 	var name = "";
@@ -63,7 +75,7 @@ function updateGold(user) {
 	var t = time();
 	var gold_up = 0;
 	const interval = 1;
-	const limit = 1000;
+	const limit = 1000 * ud.level;
 	if (t >= ud.gold_time + interval) {
 		gold_up = (t - ud.gold_time) / interval;
 	}
@@ -276,7 +288,9 @@ function doCommands(command, user, options) {
 			}
 		}
 	}
- 
+	if (command == "uptime") {
+		uptime();
+	}
 	if (command == "attack") {
 		if (options[0] != undefined) {
 			options[0] = options[0].toLowerCase();
@@ -337,13 +351,13 @@ function doCommands(command, user, options) {
 const tmi = require('tmi.js');
 const fs = require('fs');
 const { exec } = require('child_process');
+const start_time = time();
 
 var player = require('play-sound')(opts = {});
 var battles = {};
 var user_data = JSON.parse(fs.readFileSync("data.json", "utf8"));
 var options = JSON.parse(fs.readFileSync("options.json", "utf8"));
 var user_commands = loadUserCommands();
-
 var client = new tmi.client(options);
 client.connect();
 
