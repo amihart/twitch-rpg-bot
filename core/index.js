@@ -311,7 +311,7 @@ function doCommands(command, user, options) {
 	if (command == "accept") {
 		if (battles[user] == undefined) {
 			chat(user + ", no one is trying to fight you. Pick"+
-				" a fight with someone using !battle TehePelo");
+				" a fight with someone using !attack TehePelo");
 		} else { 
 			var user1 = battles[user];
 			var user2 = user;
