@@ -190,7 +190,7 @@ function attack(user1, user2) {
 	if (hp_loss == 0) {
 		chat(user2 + " is attacked but the attack misses! FailFish");
 	} else if (hp_loss >= user1.level * 10) {
-		chat(user2 + " is attacked and loses " + hp_loss + " HP! Critical hit! BlessRNG");
+		chat(user2 + " is attacked and loses " + hp_loss + " HP! Critical hit! CurseLit KAPOW CurseLit");
 	} else {
 		chat(user2 + " is attacked and loses " + hp_loss + " HP! Poooound KAPOW");
 	}
@@ -338,7 +338,7 @@ function doCommands(command, user, options) {
 		heal(user);
 	}
 	if (command == "gold") {
-		chat(user + " has " + user_data[user].gold + " gold. BlessRNG TwitchRPG");
+		chat(user + " has " + user_data[user].gold + " gold. GivePLZ PJSugar");
 	}
 	if (command == "forge") {
 		forge(user);
